@@ -10,12 +10,15 @@ export default function HomeScreen() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#dfecf1', dark: '#6B7280' }}
+    
       headerImage={
         <Image
           source={require('@/assets/images/FitnessApp-2.png')}
           style={styles.fitnessAppLogo}
         />
       }>
+
+        <ThemedView style={{ flex: 1, justifyContent: 'center',  alignItems: 'center', gap: 20, }}>
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title" style={styles.title}>Construye el cuerpo que quieres, sin complicaciones.</ThemedText>
       </ThemedView>
@@ -31,6 +34,8 @@ export default function HomeScreen() {
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
       </ThemedView>
+
+      </ThemedView>
     </ParallaxScrollView>
   );
 }
@@ -38,8 +43,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   titleContainer: {
     alignItems: 'center',
-    gap: 8,
-    top: 25,
+    gap: 20,
     marginBottom: 8,
   },
   title: {
@@ -49,23 +53,20 @@ const styles = StyleSheet.create({
   subtitle: {
     textAlign: 'center',
     fontWeight: 'bold',
-    top: 30,
     marginBottom: 40,
+    maxWidth: 320,
   },
   description: {
     textAlign: 'center',
-    top: 0,
     opacity: 0.7,
   },
   stepContainer: {
-    gap: 8,
+    gap: 20,
     marginBottom: 8,
   },
   fitnessAppLogo: {
-    height: 190,
-    width: 350,
-    bottom: 0,
-    left: 30,
-    position: 'absolute',
+    height: 300,
+    width: 450,
+    alignSelf: 'center',
   },
 });
