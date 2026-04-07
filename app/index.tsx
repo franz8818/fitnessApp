@@ -1,6 +1,10 @@
 import { Image } from 'expo-image';
 import { Platform, StyleSheet } from 'react-native';
 
+import { TouchableOpacity } from 'react-native';
+import { router } from 'expo-router';
+
+
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -18,7 +22,7 @@ export default function HomeScreen() {
         />
       }>
 
-        <ThemedView style={{ flex: 1, justifyContent: 'center',  alignItems: 'center', gap: 20, }}>
+        <ThemedView style={{ flex: 1, justifyContent: 'center',  alignItems: 'center', gap: 10, }}>
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title" style={styles.title}>Construye el cuerpo que quieres, sin complicaciones.</ThemedText>
       </ThemedView>
@@ -32,8 +36,29 @@ export default function HomeScreen() {
         <Link href="/modal">
         </Link>
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-      </ThemedView>
+      
+      <ThemedView style={styles.buttonsContainer}>
+  
+  <TouchableOpacity 
+    style={styles.primaryButton}
+    onPress={() => router.push('/auth')}
+  >
+    <ThemedText style={styles.primaryButtonText}>
+      Iniciar sesión
+    </ThemedText>
+  </TouchableOpacity>
+
+  <TouchableOpacity 
+    style={styles.secondaryButton}
+    onPress={() => router.push('/exercises')}
+  >
+    <ThemedText style={styles.secondaryButtonText}>
+      Demo
+    </ThemedText>
+  </TouchableOpacity>
+
+</ThemedView>
+
 
       </ThemedView>
     </ParallaxScrollView>
@@ -61,12 +86,52 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   stepContainer: {
-    gap: 20,
+    gap: 10,
     marginBottom: 8,
   },
   fitnessAppLogo: {
-    height: 300,
-    width: 450,
+    height: 250,
+    width: 225,
     alignSelf: 'center',
   },
+
+  // Buttons
+  buttonsContainer: {
+  flexDirection: 'row',
+  width: '100%',
+  alignItems: 'center',
+  gap: 25,
+  paddingHorizontal: 30,
+},
+
+primaryButton: {
+  flex: 1,
+  justifyContent: 'center',
+  backgroundColor: '#111',
+  paddingVertical: 10,
+  paddingHorizontal: 10,
+  borderRadius: 10,
+  alignItems: 'center',
+},
+
+primaryButtonText: {
+  color: '#fff',
+  fontWeight: '600',
+},
+
+secondaryButton: {
+  flex: 1,
+  borderWidth: 1,
+  borderColor: '#999',
+  paddingVertical: 10,
+  paddingHorizontal: 10,
+  borderRadius: 10,
+  alignItems: 'center',
+},
+
+secondaryButtonText: {
+  color: '#999',
+  fontWeight: '500',
+},
+
 });
