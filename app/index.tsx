@@ -105,13 +105,13 @@ const styles = StyleSheet.create({
 },
 
 primaryButton: {
-  flex: 1,
+  flex: 2,
   justifyContent: 'center',
-  backgroundColor: '#111',
+  backgroundColor: '#199dd7',
   paddingVertical: 10,
-  paddingHorizontal: 10,
   borderRadius: 10,
   alignItems: 'center',
+  flexDirection: 'row'
 },
 
 primaryButtonText: {
