@@ -1,8 +1,8 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import { TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
+import { TouchableOpacity } from 'react-native';
 
 
 import ParallaxScrollView from '@/components/parallax-scroll-view';
@@ -14,7 +14,7 @@ export default function HomeScreen() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#dfecf1', dark: '#6B7280' }}
-    
+
       headerImage={
         <Image
           source={require('@/assets/images/FitnessApp-2.png')}
@@ -22,46 +22,45 @@ export default function HomeScreen() {
         />
       }>
 
-        <ThemedView style={{ flex: 1, justifyContent: 'center',  alignItems: 'center', gap: 10, }}>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title" style={styles.title}>Construye el cuerpo que quieres, sin complicaciones.</ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle" style={styles.subtitle}>Registra tus entrenamientos, sigue tu progreso y mantén el control total de tu rutina desde un solo lugar.</ThemedText>
-        <ThemedText style={styles.description}>
-          Registrate o dale click a Demo para probar la app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-        </Link>
-      </ThemedView>
-      
+      <ThemedView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', gap: 10, }}>
+        <ThemedView style={styles.titleContainer}>
+          <ThemedText type="title" style={styles.title}>Construye el cuerpo que quieres, sin complicaciones.</ThemedText>
+        </ThemedView>
+        <ThemedView style={styles.stepContainer}>
+          <ThemedText type="subtitle" style={styles.subtitle}>Registra tus entrenamientos, sigue tu progreso y mantén el control total de tu rutina desde un solo lugar.</ThemedText>
+          <ThemedText style={styles.description}>
+            Registrate o dale click a Demo para probar la app.
+          </ThemedText>
+        </ThemedView>
+        <ThemedView style={styles.stepContainer}>
+          <Link href="/modal">
+          </Link>
+        </ThemedView>
+
       <ThemedView style={styles.buttonsContainer}>
-  
-  <TouchableOpacity 
-    style={styles.primaryButton}
-    onPress={() => router.push('/auth')}
-  >
-    <ThemedText style={styles.primaryButtonText}>
-      Iniciar sesión
-    </ThemedText>
-  </TouchableOpacity>
 
-  <TouchableOpacity 
-    style={styles.secondaryButton}
-    onPress={() => router.push('/exercises')}
-  >
-    <ThemedText style={styles.secondaryButtonText}>
-      Demo
-    </ThemedText>
-  </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.primaryButton}
+          onPress={() => router.push('/auth')}
+        >
+          <ThemedText style={styles.primaryButtonText}>
+            Iniciar sesión
+          </ThemedText>
+        </TouchableOpacity>
 
-</ThemedView>
-
+        <TouchableOpacity
+          style={styles.secondaryButton}
+          onPress={() => router.push('/explore')}
+        >
+          <ThemedText style={styles.secondaryButtonText}>
+            Demo
+          </ThemedText>
+        </TouchableOpacity>
 
       </ThemedView>
-    </ParallaxScrollView>
+
+    </ThemedView>
+    </ParallaxScrollView >
   );
 }
 
@@ -97,41 +96,41 @@ const styles = StyleSheet.create({
 
   // Buttons
   buttonsContainer: {
-  flexDirection: 'row',
-  width: '100%',
-  alignItems: 'center',
-  gap: 25,
-  paddingHorizontal: 30,
-},
+    flexDirection: 'row',
+    width: '100%',
+    alignItems: 'center',
+    gap: 25,
+    paddingHorizontal: 30,
+  },
 
-primaryButton: {
-  flex: 2,
-  justifyContent: 'center',
-  backgroundColor: '#199dd7',
-  paddingVertical: 10,
-  borderRadius: 10,
-  alignItems: 'center',
-  flexDirection: 'row'
-},
+  primaryButton: {
+    flex: 2,
+    justifyContent: 'center',
+    backgroundColor: '#199dd7',
+    paddingVertical: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
 
-primaryButtonText: {
-  color: '#fff',
-  fontWeight: '600',
-},
+  primaryButtonText: {
+    color: '#fff',
+    fontWeight: '600',
+  },
 
-secondaryButton: {
-  flex: 1,
-  borderWidth: 1,
-  borderColor: '#999',
-  paddingVertical: 10,
-  paddingHorizontal: 10,
-  borderRadius: 10,
-  alignItems: 'center',
-},
+  secondaryButton: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#999',
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
 
-secondaryButtonText: {
-  color: '#999',
-  fontWeight: '500',
-},
+  secondaryButtonText: {
+    color: '#999',
+    fontWeight: '500',
+  },
 
 });

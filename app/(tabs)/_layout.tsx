@@ -16,18 +16,26 @@ export default function TabLayout() {
         headerShown: false,
         tabBarButton: HapticTab,
       }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Iniciar Sesión',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.fill" color={color} />,
-        }}
-      />
+        <Tabs.Screen
+          name="auth"
+          options={{
+            title: 'Iniciar sesión',
+            tabBarIcon: ({ color }) => (<IconSymbol size={28} name="person.fill" color={color} />
+            ),
+          }}
+        />
       <Tabs.Screen
         name="explore"
         options={{
-          title: 'Demo',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="play.circle.fill" color={color} />,
+          title: 'Ejercicios',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="figure.strengthtraining.traditional" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="muscles"
+        options={{
+          title: 'Músculos',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="figure.arms.open" color={color} />,
         }}
       />
     </Tabs>
