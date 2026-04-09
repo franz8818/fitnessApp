@@ -16,6 +16,13 @@ export default function TabLayout() {
         headerShown: false,
         tabBarButton: HapticTab,
       }}>
+      <Tabs.Screen
+        name="explore"
+        options={{
+          title: 'Ejercicios',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="figure.strengthtraining.traditional" color={color} />,
+        }}
+      />
         <Tabs.Screen
           name="auth"
           options={{
@@ -24,13 +31,6 @@ export default function TabLayout() {
             ),
           }}
         />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Ejercicios',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="figure.strengthtraining.traditional" color={color} />,
-        }}
-      />
       <Tabs.Screen
         name="muscles"
         options={{
