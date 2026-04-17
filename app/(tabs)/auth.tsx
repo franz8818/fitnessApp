@@ -1,4 +1,4 @@
-import { StyleSheet, TextInput } from 'react-native';
+import { StyleSheet, TextInput, Pressable } from 'react-native';
 import { Image } from 'expo-image';
 
 
@@ -14,15 +14,15 @@ export default function AuthScreen() {
 
     <ThemedView style={{ flex: 1 }}>
 
-   <ThemedView style={styles.header}>
-  <Image
-    source={require('@/assets/images/FitnessApp-2.png')}
-    style={styles.fitnessAppLogo}
-  />
-</ThemedView>
+      <ThemedView style={styles.header}>
+        <Image
+          source={require('@/assets/images/FitnessApp-2.png')}
+          style={styles.fitnessAppLogo}
+        />
+      </ThemedView>
 
 
-      <ThemedView style={styles.container}>
+      <ThemedView style={styles.formContainer}>
 
         <ThemedView style={styles.titleContainer}>
           <ThemedText
@@ -32,7 +32,12 @@ export default function AuthScreen() {
           </ThemedText>
         </ThemedView>
 
-        <ThemedText>Ingresa tus datos para continuar</ThemedText>
+        <ThemedText>
+          {isRegister
+            ? 'Crea una cuenta para continuar'
+            : 'Ingresa tus datos para continuar'}
+        </ThemedText>
+
 
         <TextInput
           placeholder="Correo electrónico"
@@ -45,30 +50,63 @@ export default function AuthScreen() {
           style={styles.input}
         />
 
+        {isRegister && (
+          <TextInput
+            placeholder="Confirmar contraseña"
+            secureTextEntry
+            style={styles.input}
+          />
+        )}
+
+        <Pressable onPress={() => console.log('Botón presionado')}
+          style={({ pressed }) => [
+            styles.button,
+            isRegister && styles.buttonRegister,
+            pressed && { opacity: 0.7 }
+          ]}
+        >
+          <ThemedText style={styles.buttonText}>
+            {isRegister ? 'Crear cuenta' : 'Iniciar sesión'}
+          </ThemedText>
+        </Pressable>
+
+        <Pressable onPress={() => setIsRegister(!isRegister)}>
+          <ThemedText style={styles.switchText}>
+            {isRegister
+              ? '¿Ya tienes cuenta? Inicia sesión'
+              : '¿No tienes cuenta? Regístrate'}
+          </ThemedText>
+        </Pressable>
+
+
       </ThemedView>
-      </ThemedView>
-   
+    </ThemedView>
+
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,              // 🔥 CLAVE para evitar superposición
-    padding: 20,
-    justifyContent: 'center',
+
+  formContainer: {
+    flex: 1,              // Se usa para evitar superposición
+    padding: 30,
+    paddingTop: 50,
+    justifyContent: 'flex-start', //Empiezan los elementos al comienzo 
   },
+
   header: {
-  width: '100%',
-  height: 250,
-  justifyContent: 'center',
-  alignItems: 'center',
-  backgroundColor: '#f2f2f2', // 👈 simula el gris
-},
+    width: '100%',
+    height: 250,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f2f2f2', // Fondo gris claro para el encabezado
+  },
 
   titleContainer: {
     flexDirection: 'row',
     marginBottom: 20,
   },
+
   input: {
     height: 50,
     borderWidth: 1,
@@ -77,10 +115,36 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginTop: 15,
   },
+
   fitnessAppLogo: {
     width: 200,
     height: 200,
     alignSelf: 'center',
     marginTop: 60,
   },
+
+  button: {
+    backgroundColor: '#199dd7',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+
+  buttonRegister: {
+    backgroundColor: '#153152',
+  },
+
+  buttonText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 16,
+  },
+
+  switchText: {
+    marginTop: 15,
+    textAlign: 'center',
+    color: '#666',
+  }
+
 });
