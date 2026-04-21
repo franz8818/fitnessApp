@@ -49,10 +49,19 @@ export default function TabTwoScreen() {
         {exercises.map((item) => (
           <Pressable
             key={item.id}
+            style={styles.card}
             onPress={() => setSelectedExercise(item)}
           >
-            <ThemedText>{item.name}</ThemedText>
+            <View style={styles.cardInner}>
+              <Image
+                source={item.image}
+                style={styles.image}
+              />
+              <ThemedText>{item.name}</ThemedText>
+            </View>
+
           </Pressable>
+
         ))}
 
         {selectedExercise && (
@@ -80,18 +89,27 @@ const styles = StyleSheet.create({
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    paddingHorizontal: 10,
     marginTop: 20,
   },
 
   card: {
-    width: '30%',
-    backgroundColor: '#1E1E1E',
-    padding: 16,
+    width: '33.33%', //Divide el espacio en 3 columnas exactas.
+    padding: 3, //Crea el espacio entre columnas (simula el gap)
+  },
+
+  cardInner: {
+    borderColor: 'red',
+    borderWidth: 1,
     borderRadius: 12,
-    marginBottom: 12,
+
+    padding: 12,
     alignItems: 'center',
   },
+
+  image: {
+  width: '100%',
+  height: 70,
+  borderRadius: 8,
+},
 
 });

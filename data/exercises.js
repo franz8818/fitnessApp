@@ -1,26 +1,58 @@
 export const exercises = [
   {
     id: 1,
-    name: 'Push Up',
-    description: 'Ejercicio de pecho y tríceps. Mantén el cuerpo recto y baja controlado.',
-    image: 'https://via.placeholder.com/300x200'
+    name: 'Dominadas',
+    description: '',
+    image: require('../assets/ejercicios/Dominadas.png')
   },
   {
     id: 2,
-    name: 'Squat',
-    description: 'Ejercicio de piernas. Baja como si te sentaras, manteniendo la espalda recta.',
-    image: 'https://via.placeholder.com/300x200'
+    name: 'Fondos',
+    description: '',
+    image: require('../assets/ejercicios/Fondos.png')
+
   },
   {
     id: 3,
-    name: 'Plank',
-    description: 'Ejercicio de core. Mantén el abdomen contraído y el cuerpo alineado.',
-    image: 'https://via.placeholder.com/300x200'
+    name: 'Sentadillas',
+    description: '',
+    image: require('../assets/ejercicios/Sentadillas.png')
+
   },
   {
     id: 4,
-    name: 'Lunges',
-    description: 'Ejercicio de piernas. Da un paso adelante y baja la rodilla trasera.',
+    name: 'Caminadora',
+    description: '',
+    image: 'https://via.placeholder.com/300x200'
+  },
+  {
+    id: 5,
+    name: '',
+    description: '',
+    image: 'https://via.placeholder.com/300x200'
+  },
+  {
+    id: 6,
+    name: '',
+    description: '',
+    image: 'https://via.placeholder.com/300x200'
+  },
+  {
+    id: 7,
+    name: '',
+    description: '',
+    image: 'https://via.placeholder.com/300x200'
+  },
+  {
+    id: 8,
+    name: '',
+    description: '',
+    image: 'https://via.placeholder.com/300x200'
+  },
+  {
+    id: 9,
+    name: '',
+    description: '',
     image: 'https://via.placeholder.com/300x200'
   }
 ];
