@@ -41,11 +41,13 @@ export default function AuthScreen() {
 
         <TextInput
           placeholder="Correo electrónico"
+          placeholderTextColor="#999"
           style={styles.input}
         />
 
         <TextInput
           placeholder="Contraseña"
+          placeholderTextColor="#999"
           secureTextEntry
           style={styles.input}
         />
@@ -53,6 +55,7 @@ export default function AuthScreen() {
         {isRegister && (
           <TextInput
             placeholder="Confirmar contraseña"
+            placeholderTextColor="#999"
             secureTextEntry
             style={styles.input}
           />

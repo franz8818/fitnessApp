@@ -32,10 +32,6 @@ export default function HomeScreen() {
             Registrate o dale click a Demo para probar la app.
           </ThemedText>
         </ThemedView>
-        <ThemedView style={styles.stepContainer}>
-          <Link href="/modal">
-          </Link>
-        </ThemedView>
 
       <ThemedView style={styles.buttonsContainer}>
 
