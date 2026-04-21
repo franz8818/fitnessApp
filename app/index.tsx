@@ -18,7 +18,7 @@ export default function HomeScreen() {
       headerImage={
         <Image
           source={require('@/assets/images/FitnessApp-2.png')}
-          style={styles.fitnessAppLogo}
+          style={styles.headerImage}
         />
       }>
 
@@ -61,6 +61,13 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  
+  headerImage: {
+  width: 300,
+  height: 300,
+  resizeMode: 'contain',
+  position: 'absolute',
+},
   titleContainer: {
     alignItems: 'center',
     gap: 20,

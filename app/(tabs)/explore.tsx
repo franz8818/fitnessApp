@@ -2,12 +2,9 @@ import { Image } from 'expo-image';
 import { Platform, StyleSheet, View, Pressable } from 'react-native';
 import { useState } from 'react';
 
-import { Collapsible } from '@/components/ui/collapsible';
-import { ExternalLink } from '@/components/external-link';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { IconSymbol } from '@/components/ui/icon-symbol';
 
 import { Fonts } from '@/constants/theme';
 import { exercises } from '@/data/exercises';
@@ -22,18 +19,19 @@ type Exercise = {
 
 export default function TabTwoScreen() {
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
-  console.log('Ejercicios:', exercises);
+  // console.log('Ejercicios:', exercises);
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
+
       headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
+        <Image
+          source={require('@/assets/images/FitnessApp-2.png')}
           style={styles.headerImage}
         />
       }>
+
       <ThemedView style={styles.titleContainer}>
         <ThemedText
           type="title"
@@ -47,6 +45,7 @@ export default function TabTwoScreen() {
 
       <View style={styles.grid}>
         {exercises.map((item) => (
+
           <Pressable
             key={item.id}
             style={styles.card}
@@ -69,18 +68,20 @@ export default function TabTwoScreen() {
         )}
       </View>
 
-    </ParallaxScrollView>
+    </ParallaxScrollView >
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
 
+  headerImage: {
+    width: 300,
+    height: 300,
+    bottom: -50,
+    resizeMode: 'contain',
+    position: 'absolute',
   },
+
   titleContainer: {
     flexDirection: 'row',
     gap: 8,
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
   },
 
   cardInner: {
-    borderColor: 'red',
+    borderColor: '#D0D0D0',
     borderWidth: 1,
     borderRadius: 12,
 
@@ -107,9 +108,8 @@ const styles = StyleSheet.create({
   },
 
   image: {
-  width: '100%',
-  height: 70,
-  borderRadius: 8,
-},
-
+    width: '100%',
+    height: 70,
+    borderRadius: 8,
+  },
 });
