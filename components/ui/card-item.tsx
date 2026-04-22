@@ -20,11 +20,12 @@ export default function CardItem({ name, image, onPress }: Props) {
 }
 
 const styles = StyleSheet.create({
-    
+
   card: {
     width: '33.33%',
     padding: 3,
   },
+  
   cardInner: {
     borderColor: '#D0D0D0',
     borderWidth: 1,

@@ -2,7 +2,7 @@ export const exercises = [
   {
     id: 1,
     name: 'Dominadas',
-    description: '',
+    description: 'Ponemos las manos en las barras paralelas y estiramos los brazos, con la espalda recta y las piernas un poco recogidas.\n\nBajamos de forma controlada inclinando el cuerpo un poco hacia delante hasta tener los codos flexionados a 90°. Volvemos a subir estirando bien arriba.',
     image: require('../assets/ejercicios/Dominadas.png')
   },
   {
