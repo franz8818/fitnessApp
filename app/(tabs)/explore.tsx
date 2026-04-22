@@ -1,11 +1,13 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet, View, Pressable } from 'react-native';
+import { Platform, Pressable, StyleSheet, View } from 'react-native';
+
 import { useState } from 'react';
 
 import ParallaxScrollView from '@/components/parallax-scroll-view';
+import CardItem from '@/components/ui/card-item';
+
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-
 import { Fonts } from '@/constants/theme';
 import { exercises } from '@/data/exercises';
 
@@ -27,7 +29,11 @@ export default function TabTwoScreen() {
 
       headerImage={
         <Image
-          source={require('@/assets/images/FitnessApp-2.png')}
+          source={
+            selectedExercise
+              ? selectedExercise.image
+              : require('@/assets/images/FitnessApp-2.png')
+          }
           style={styles.headerImage}
         />
       }>
@@ -43,30 +49,30 @@ export default function TabTwoScreen() {
       </ThemedView>
       <ThemedText>This app includes example code to help you get started.</ThemedText>
 
-      <View style={styles.grid}>
-        {exercises.map((item) => (
+      {!selectedExercise ? (
+        <View style={styles.grid}>
+          {exercises.map((item) => (
+            <CardItem
+              key={item.id}
+              name={item.name}
+              image={item.image}
+              onPress={() => setSelectedExercise(item)}
+            />
+          ))}
+        </View>
+      ) : (
+        <View>
 
-          <Pressable
-            key={item.id}
-            style={styles.card}
-            onPress={() => setSelectedExercise(item)}
-          >
-            <View style={styles.cardInner}>
-              <Image
-                source={item.image}
-                style={styles.image}
-              />
-              <ThemedText>{item.name}</ThemedText>
-            </View>
-
+          <Pressable onPress={() => setSelectedExercise(null)}>
+            <ThemedText>Volver</ThemedText>
           </Pressable>
 
-        ))}
 
-        {selectedExercise && (
-          <ThemedText>Seleccionado: {selectedExercise.name}</ThemedText>
-        )}
-      </View>
+          <ThemedText type="title">{selectedExercise.name}</ThemedText>
+          <ThemedText>{selectedExercise.description}</ThemedText>
+        </View>
+      )}
+
 
     </ParallaxScrollView >
   );
@@ -102,14 +108,13 @@ const styles = StyleSheet.create({
     borderColor: '#D0D0D0',
     borderWidth: 1,
     borderRadius: 12,
-
     padding: 12,
     alignItems: 'center',
   },
-
   image: {
     width: '100%',
     height: 70,
     borderRadius: 8,
   },
+
 });
