@@ -148,7 +148,7 @@ export default function TabTwoScreen() {
 
       </ParallaxScrollView >
 
-      {selectedExercise && ( //Solo aparece si estas en detallaes de un ejercicio
+      {selectedExercise && ( //Solo aparece si estas en detalles de un ejercicio
         <Pressable
           onPress={() => setSelectedExercise(null)}
           style={({ pressed }) => [

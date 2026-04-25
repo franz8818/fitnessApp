@@ -63,7 +63,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   
   headerImage: {
-  width: 300,
+  width: 400,
   height: 300,
   resizeMode: 'contain',
   position: 'absolute',
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     alignItems: 'center',
     gap: 20,
+    marginTop: 15,
     marginBottom: 8,
   },
   title: {
@@ -80,12 +81,14 @@ const styles = StyleSheet.create({
   subtitle: {
     textAlign: 'center',
     fontWeight: 'bold',
-    marginBottom: 40,
-    maxWidth: 320,
+    marginBottom: 30,
+    paddingHorizontal: 15,
   },
   description: {
     textAlign: 'center',
     opacity: 0.7,
+    paddingHorizontal: 20,
+    marginBottom: 20,
   },
   stepContainer: {
     gap: 10,
