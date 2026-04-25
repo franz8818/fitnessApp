@@ -1,5 +1,7 @@
 import { Image } from 'expo-image';
 import { Pressable, StyleSheet, View, TextInput } from 'react-native';
+import { ScrollView } from 'react-native';
+
 
 import { useState } from 'react';
 
@@ -24,6 +26,24 @@ type Exercise = {
 export default function TabTwoScreen() {
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
   // console.log('Ejercicios:', exercises);
+
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  //Carrusel de fechas
+
+  const [notes, setNotes] = useState('');
+  // Guardar Notas
+
+  //Generar un array de fechas para el carrusel
+  const getDates = () => {
+    const days = [];
+    for (let i = -3; i <= 3; i++) {
+      const date = new Date();
+      date.setDate(date.getDate() + i);
+      days.push(date);
+    }
+    return days;
+  };
+
 
   return (
 
@@ -51,6 +71,61 @@ export default function TabTwoScreen() {
           </ThemedText>
         </ThemedView>
 
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{ marginTop: 10 }}
+        >
+          {getDates().map((date, index) => {
+            const isSelected =
+              date.toDateString() === selectedDate.toDateString();
+
+            return (
+              <Pressable
+                key={index}
+                onPress={() => setSelectedDate(date)}
+                style={[
+                  styles.dateItem,
+                  isSelected && styles.dateItemActive
+                ]}
+              >
+                <ThemedText
+                  style={isSelected && { color: '#fff' }}
+                >
+                  {date.getDate()}
+                </ThemedText>
+              </Pressable>
+            );
+          })}
+        </ScrollView>
+
+        {selectedExercise && (
+          <View style={styles.formContainer}>
+
+            <ThemedText style={styles.label}>Notas</ThemedText>
+
+            <TextInput
+              style={[styles.input, { height: 100 }]}
+              placeholder="¿Cómo te fue hoy?"
+              multiline
+              value={notes}
+              onChangeText={setNotes}
+            />
+
+            <Pressable style={styles.saveButton}>
+              <ThemedText style={styles.saveButtonText}>
+                Guardar sesión
+              </ThemedText>
+            </Pressable>
+
+          </View>
+        )}
+
+        <ThemedText type="title" style={styles.sectionTitle}>
+          Descripción
+        </ThemedText>
+
+
         <ThemedText style={styles.descriptionContainer}>
           {selectedExercise
             ? selectedExercise.description
@@ -69,37 +144,6 @@ export default function TabTwoScreen() {
             ))}
           </View>
 
-        )}
-
-        {selectedExercise && (
-          <View style={styles.formContainer}>
-
-            <ThemedText style={styles.label}>Fecha</ThemedText>
-            <ThemedText>Hoy</ThemedText>
-
-            <ThemedText style={styles.label}>Serie 1</ThemedText>
-            <TextInput style={styles.input} placeholder="Reps" />
-
-            <ThemedText style={styles.label}>Serie 2</ThemedText>
-            <TextInput style={styles.input} placeholder="Reps" />
-
-            <ThemedText style={styles.label}>Serie 3</ThemedText>
-            <TextInput style={styles.input} placeholder="Reps" />
-
-            <ThemedText style={styles.label}>Serie 4</ThemedText>
-            <TextInput style={styles.input} placeholder="Reps" />
-
-            <ThemedText style={styles.label}>RIR</ThemedText>
-            <TextInput style={styles.input} placeholder="RIR" />
-
-            <ThemedText style={styles.label}>Notas</ThemedText>
-            <TextInput
-              style={[styles.input, { height: 80 }]}
-              placeholder="Notas..."
-              multiline
-            />
-
-          </View>
         )}
 
       </ParallaxScrollView >
@@ -136,6 +180,12 @@ const styles = StyleSheet.create({
     gap: 8,
     marginTop: 25,
     paddingHorizontal: 8,
+  },
+
+  sectionTitle: {
+    marginTop: 30,
+    paddingHorizontal: 8,
+    fontSize: 25, // opcional (ya viene con type="title")
   },
 
   descriptionContainer: {
@@ -177,23 +227,47 @@ const styles = StyleSheet.create({
   },
 
   formContainer: {
-  marginTop: 20,
-  paddingHorizontal: 12,
-  gap: 10,
-},
+    marginTop: 20,
+    paddingHorizontal: 12,
+    gap: 10,
+  },
 
-label: {
-  fontSize: 14,
-  opacity: 0.7,
-},
+  label: {
+    fontSize: 14,
+    opacity: 0.7,
+  },
 
-input: {
-  borderWidth: 1,
-  borderColor: '#ccc',
-  borderRadius: 10,
-  padding: 10,
-  fontSize: 16,
-},
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 10,
+    padding: 10,
+    fontSize: 16,
+  },
 
+  saveButton: {
+    marginTop: 20,
+    backgroundColor: '#153152',
+    padding: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+
+  saveButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+
+  dateItem: {
+    padding: 12,
+    borderRadius: 10,
+    backgroundColor: '#eee',
+    marginRight: 8,
+  },
+
+  dateItemActive: {
+    backgroundColor: '#153152',
+  },
 
 });
