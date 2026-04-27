@@ -47,7 +47,7 @@ export default function TabTwoScreen() {
       <ParallaxScrollView
 
         //HEADER - Se desactivo para este proyecto el darkMode
-        headerBackgroundColor={{ light: '#D0D0D0', dark: '#D0D0D0' }}
+        headerBackgroundColor={{ light: '#dfecf1', dark: '#dfecf1' }}
 
         headerImage={
           <Image
