@@ -7,9 +7,83 @@ import { ThemedView } from '@/components/themed-view';
 import { Fonts } from '@/constants/theme';
 
 import { useState } from 'react';
+import { useRouter } from 'expo-router';
 
 export default function AuthScreen() {
+
+  const router = useRouter();
   const [isRegister, setIsRegister] = useState(false);
+
+  const [user, setUser] = useState<{
+    email: string;
+    password: string;
+  } | null>(null);
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const handleLogin = () => {
+    // 1. Validar campos
+    if (!email || !password) {
+      alert('Ingresa correo y contraseña');
+      return;
+    }
+
+    // 2. Validar si existe usuario
+    if (!user) {
+      alert('No hay usuario registrado');
+      return;
+    }
+
+    // 3. Comparar credenciales
+    if (email === user.email && password === user.password) {
+      alert('Bienvenido');
+      router.replace('/(tabs)/explore');
+    }
+    else {
+      alert('Credenciales incorrectas');
+    }
+  };
+
+  const handleRegister = () => {
+    // console.log('Entró a handleRegister');
+    // console.log(email, password, confirmPassword);
+
+    // 1. Validar campos vacíos
+    if (!email || !password || !confirmPassword) {
+      alert('Completa todos los campos');
+      return;
+    }
+
+    // 2. Validar contraseñas
+    if (password !== confirmPassword) {
+      alert('Las contraseñas no coinciden');
+      return;
+    }
+
+    const registeredEmail = email;
+
+    // 3. Guardar usuario
+    setUser({
+      email,
+      password,
+    });
+
+    alert('Cuenta creada correctamente');
+
+    // 4. Limpiar campos
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+
+    // Restaura el email escrito para facilitar el login
+    setEmail(registeredEmail);
+
+    // 5. Volver a login
+    setIsRegister(false);
+  };
+
   return (
 
     <ThemedView style={{ flex: 1 }}>
@@ -41,27 +115,37 @@ export default function AuthScreen() {
 
         <TextInput
           placeholder="Correo electrónico"
-          placeholderTextColor="#999"
+          value={email}
+          onChangeText={setEmail}
+
           style={styles.input}
+          placeholderTextColor="#999"
         />
 
         <TextInput
           placeholder="Contraseña"
-          placeholderTextColor="#999"
+          value={password}
+          onChangeText={setPassword}
           secureTextEntry
+
           style={styles.input}
+          placeholderTextColor="#999"
         />
+
 
         {isRegister && (
           <TextInput
             placeholder="Confirmar contraseña"
-            placeholderTextColor="#999"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
             secureTextEntry
+
             style={styles.input}
+            placeholderTextColor="#999"
           />
         )}
 
-        <Pressable onPress={() => console.log('Botón presionado')}
+        <Pressable onPress={isRegister ? handleRegister : handleLogin}
           style={({ pressed }) => [
             styles.button,
             isRegister && styles.buttonRegister,

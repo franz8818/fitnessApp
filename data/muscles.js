@@ -3,19 +3,19 @@ export const muscles = [
     id: 1,
     name: 'Pecho',
     description: 'Músculos del pecho encargados de empujar y estabilizar el tren superior.',
-    image: 'https://via.placeholder.com/300x200'
+    image: require('../assets/musculos/pecho.jpg')
   },
   {
     id: 2,
     name: 'Espalda',
     description: 'Grupo muscular clave para la postura y los movimientos de tracción.',
-    image: 'https://via.placeholder.com/300x200'
+    image: require('../assets/musculos/espalda.jpg')
   },
   {
     id: 3,
     name: 'Piernas',
     description: 'Base del cuerpo, responsables de la fuerza y el desplazamiento.',
-    image: 'https://via.placeholder.com/300x200'
+        image: require('../assets/musculos/piernas.jpg')
   },
   {
     id: 4,

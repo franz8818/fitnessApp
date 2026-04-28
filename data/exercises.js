@@ -27,31 +27,31 @@ export const exercises = [
   },
   {
     id: 5,
-    name: '',
+    name: 'Press banca',
     description: '',
     image: 'https://via.placeholder.com/300x200'
   },
   {
     id: 6,
-    name: '',
+    name: 'Aperturas',
     description: '',
     image: 'https://via.placeholder.com/300x200'
   },
   {
     id: 7,
-    name: '',
+    name: 'Remo',
     description: '',
     image: 'https://via.placeholder.com/300x200'
   },
   {
     id: 8,
-    name: '',
+    name: 'Curl bíceps',
     description: '',
     image: 'https://via.placeholder.com/300x200'
   },
   {
     id: 9,
-    name: '',
+    name: 'Elevación',
     description: '',
     image: 'https://via.placeholder.com/300x200'
   }

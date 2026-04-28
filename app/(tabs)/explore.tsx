@@ -136,7 +136,6 @@ export default function TabTwoScreen() {
 
         {!selectedExercise && (
           <>
-
             <ThemedText type="title" style={styles.sectionTitle}>
               Explora los ejercicios
             </ThemedText>
