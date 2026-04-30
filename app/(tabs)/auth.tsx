@@ -1,6 +1,8 @@
+import { app } from '@/config/firebase';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+
 import { StyleSheet, TextInput, Pressable } from 'react-native';
 import { Image } from 'expo-image';
-
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -10,6 +12,9 @@ import { useState } from 'react';
 import { useRouter } from 'expo-router';
 
 export default function AuthScreen() {
+
+  // Conecta tu app con Firebase Auth
+  const auth = getAuth(app);
 
   const router = useRouter();
   const [isRegister, setIsRegister] = useState(false);
@@ -39,6 +44,7 @@ export default function AuthScreen() {
     // 3. Comparar credenciales
     if (email === user.email && password === user.password) {
       alert('Bienvenido');
+      // Remplazar la pantalla de autenticación por la de exploración
       router.replace('/(tabs)/explore');
     }
     else {
@@ -46,42 +52,37 @@ export default function AuthScreen() {
     }
   };
 
-  const handleRegister = () => {
-    // console.log('Entró a handleRegister');
-    // console.log(email, password, confirmPassword);
-
-    // 1. Validar campos vacíos
+  const handleRegister = async () => {
     if (!email || !password || !confirmPassword) {
       alert('Completa todos los campos');
       return;
     }
 
-    // 2. Validar contraseñas
     if (password !== confirmPassword) {
       alert('Las contraseñas no coinciden');
       return;
     }
 
-    const registeredEmail = email;
+    try {
+      //Maneja el usuario con Firebase Auth
+      await createUserWithEmailAndPassword(auth, email, password);
 
-    // 3. Guardar usuario
-    setUser({
-      email,
-      password,
-    });
+      alert('Cuenta creada correctamente');
 
-    alert('Cuenta creada correctamente');
+      const registeredEmail = email;
 
-    // 4. Limpiar campos
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
 
-    // Restaura el email escrito para facilitar el login
-    setEmail(registeredEmail);
+      setEmail(registeredEmail);
+      setIsRegister(false);
 
-    // 5. Volver a login
-    setIsRegister(false);
+    } catch (error) {
+      console.log(error);
+
+      alert('Error al crear la cuenta');
+    }
   };
 
   return (
