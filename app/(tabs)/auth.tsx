@@ -1,5 +1,5 @@
 import { app } from '@/config/firebase';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
 import { StyleSheet, TextInput, Pressable } from 'react-native';
 import { Image } from 'expo-image';
@@ -28,30 +28,29 @@ export default function AuthScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleLogin = () => {
-    // 1. Validar campos
-    if (!email || !password) {
-      alert('Ingresa correo y contraseña');
-      return;
-    }
+  const handleLogin = async () => {
+  if (!email || !password) {
+    alert('Completa todos los campos');
+    return;
+  }
 
-    // 2. Validar si existe usuario
-    if (!user) {
-      alert('No hay usuario registrado');
-      return;
-    }
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
 
-    // 3. Comparar credenciales
-    if (email === user.email && password === user.password) {
-      alert('Bienvenido');
-      // Remplazar la pantalla de autenticación por la de exploración
-      router.replace('/(tabs)/explore');
-    }
-    else {
-      alert('Credenciales incorrectas');
-    }
-  };
+    alert('Bienvenido');
 
+    // Redirigir a la app
+    router.replace('/(tabs)/explore');
+
+  } catch (error) {
+    console.log(error);
+
+    alert('Correo o contraseña incorrectos');
+  }
+};
+
+
+  // Registro de usuario 
   const handleRegister = async () => {
     if (!email || !password || !confirmPassword) {
       alert('Completa todos los campos');
@@ -64,6 +63,7 @@ export default function AuthScreen() {
     }
 
     try {
+      
       //Maneja el usuario con Firebase Auth
       await createUserWithEmailAndPassword(auth, email, password);
 
