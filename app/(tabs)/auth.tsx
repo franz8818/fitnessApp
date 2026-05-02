@@ -49,7 +49,6 @@ export default function AuthScreen() {
   }
 };
 
-
   // Registro de usuario 
   const handleRegister = async () => {
     if (!email || !password || !confirmPassword) {
