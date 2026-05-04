@@ -9,17 +9,18 @@ import CardItem from '@/components/ui/card-item';
 import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, addDoc, getDocs } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 import { exercises } from '@/data/exercises'; // Datos de ejercicios locales (strings)
 
 
 type Exercise = {
-  id: number;
+  id: string; // Firestore usa id como string
   name: string;
   description: string;
-  image: string;
+  image: any; //ReactNative usa números internos para las imagenes locales, por eso se deja como any
 };
+
 
 type EjercicioDB = {
   id: string;
@@ -61,6 +62,42 @@ export default function TabTwoScreen() {
   const [notes, setNotes] = useState('');
   // Guardar Notas
 
+  // Función para guardar el entrenamiento en Firestore
+  const guardarEntrenamiento = async () => {
+    if (!selectedExercise) {
+      alert('Selecciona un ejercicio');
+      return;
+    }
+
+    if (!notes.trim()) {
+      alert('Escribe una nota');
+      return;
+    }
+
+    console.log('Botón presionado');
+    console.log('Ejercicio:', selectedExercise);
+    console.log('Notas:', notes);
+    console.log('Fecha:', selectedDate);
+
+
+    try {
+      await addDoc(collection(db, 'entrenamientos'), {
+        exercise: selectedExercise.name,
+        notes: notes,
+        date: selectedDate.toISOString(),
+      });
+
+      alert('Entrenamiento guardado');
+      setNotes('');
+
+    } catch (error) {
+      console.log(error);
+      alert('Error al guardar');
+    }
+  };
+
+
+  // CONEXIÓN CON FIREBASE - Se obtiene la lista de ejercicios desde Firestore.
   const [ejerciciosDB, setEjerciciosDB] = useState<EjercicioDB[]>([]);
   const obtenerEjercicios = async () => {
     const querySnapshot = await getDocs(collection(db, 'ejercicios'));
@@ -153,7 +190,7 @@ export default function TabTwoScreen() {
               onChangeText={setNotes}
             />
 
-            <Pressable style={styles.saveButton}>
+            <Pressable onPress={guardarEntrenamiento} style={styles.saveButton}>
               <ThemedText style={styles.saveButtonText}>
                 Guardar sesión
               </ThemedText>
@@ -194,7 +231,7 @@ export default function TabTwoScreen() {
                   image={images[item.name] || require('@/assets/images/FitnessApp-2.png')} // fallback - Si no encuentra la imagen, muestra una por defecto.
                   onPress={() =>
                     setSelectedExercise({
-                      id: Number(item.id), // o déjalo string si luego ajustas el tipo
+                      id: item.id, // o déjalo string si luego ajustas el tipo
                       name: item.name,
                       description: item.description,
                       image: images[item.name] || require('@/assets/images/FitnessApp-2.png')
