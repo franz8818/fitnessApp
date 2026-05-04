@@ -9,9 +9,9 @@ import CardItem from '@/components/ui/card-item';
 import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 
-import { exercises } from '@/data/exercises';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/config/firebase';
+import { exercises } from '@/data/exercises'; // Datos de ejercicios locales (strings)
 
 
 type Exercise = {
@@ -23,8 +23,8 @@ type Exercise = {
 
 type EjercicioDB = {
   id: string;
-  nombre: string;
-  descripcion: string;
+  name: string;
+  description: string;
 };
 
 
@@ -32,11 +32,19 @@ export default function TabTwoScreen() {
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
   // console.log('Ejercicios:', exercises);
 
+
+  //IMAGENES - Se obtienen de manera local con un mapeo de datos.
+  const images: { [key: string]: any } = {
+    Dominadas: require('@/assets/ejercicios/Dominadas.png'),
+    Fondos: require('@/assets/ejercicios/Fondos.png'),
+    Sentadillas: require('@/assets/ejercicios/Sentadillas.png'),
+  };
+
+
+  //CARRUSEL DE FECHAS
   const [selectedDate, setSelectedDate] = useState(new Date());
   //Carrusel de fechas
 
-  const [notes, setNotes] = useState('');
-  // Guardar Notas
 
   //Generar un array de fechas para el carrusel
   const getDates = () => {
@@ -48,6 +56,10 @@ export default function TabTwoScreen() {
     }
     return days;
   };
+
+  //NOTAS
+  const [notes, setNotes] = useState('');
+  // Guardar Notas
 
   const [ejerciciosDB, setEjerciciosDB] = useState<EjercicioDB[]>([]);
   const obtenerEjercicios = async () => {
@@ -175,12 +187,19 @@ export default function TabTwoScreen() {
             </ThemedText>
 
             <View style={styles.grid}>
-              {exercises.map((item) => (
+              {ejerciciosDB.map((item) => (
                 <CardItem
                   key={item.id}
                   name={item.name}
-                  image={item.image}
-                  onPress={() => setSelectedExercise(item)}
+                  image={images[item.name] || require('@/assets/images/FitnessApp-2.png')} // fallback - Si no encuentra la imagen, muestra una por defecto.
+                  onPress={() =>
+                    setSelectedExercise({
+                      id: Number(item.id), // o déjalo string si luego ajustas el tipo
+                      name: item.name,
+                      description: item.description,
+                      image: images[item.name] || require('@/assets/images/FitnessApp-2.png')
+                    })
+                  }
                 />
               ))}
             </View>

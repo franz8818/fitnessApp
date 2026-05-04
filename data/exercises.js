@@ -8,21 +8,21 @@ export const exercises = [
   {
     id: 2,
     name: 'Fondos',
-    description: '',
+    description: 'HOLA',
     image: require('../assets/ejercicios/Fondos.png')
 
   },
   {
     id: 3,
     name: 'Sentadillas',
-    description: '',
+    description: 'HOLA',
     image: require('../assets/ejercicios/Sentadillas.png')
 
   },
   {
     id: 4,
     name: 'Caminadora',
-    description: '',
+    description: 'HOLA',
     image: 'https://via.placeholder.com/300x200'
   },
   {
