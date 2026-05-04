@@ -14,11 +14,14 @@ const firebaseConfig = {
   appId: "1:336265672290:web:4c3481bb9170bbc2f9433b"
 };
 
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
 // Usa esta app y conectala a Firestore
 const db = getFirestore(app);
 
-// Initialize Firebase
-export const app = initializeApp(firebaseConfig);
+
+console.log("Firebase inicializado");
 
 // Importate para poder usarla en otras pantallas
-export { db };
+export { db, app };

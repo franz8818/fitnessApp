@@ -1,8 +1,7 @@
 import { Image } from 'expo-image';
 import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import CardItem from '@/components/ui/card-item';
@@ -11,6 +10,9 @@ import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 
 import { exercises } from '@/data/exercises';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/config/firebase';
+
 
 type Exercise = {
   id: number;
@@ -18,6 +20,13 @@ type Exercise = {
   description: string;
   image: string;
 };
+
+type EjercicioDB = {
+  id: string;
+  nombre: string;
+  descripcion: string;
+};
+
 
 export default function TabTwoScreen() {
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
@@ -39,6 +48,27 @@ export default function TabTwoScreen() {
     }
     return days;
   };
+
+  const [ejerciciosDB, setEjerciciosDB] = useState<EjercicioDB[]>([]);
+  const obtenerEjercicios = async () => {
+    const querySnapshot = await getDocs(collection(db, 'ejercicios'));
+
+    const lista = querySnapshot.docs.map(doc => {
+      const data = doc.data() as Omit<EjercicioDB, 'id'>;
+
+      return {
+        id: doc.id,
+        ...data
+      };
+    });
+
+    setEjerciciosDB(lista);
+  };
+
+  useEffect(() => {
+    obtenerEjercicios();
+  }, []);
+
 
   return (
 
