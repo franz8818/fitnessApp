@@ -64,35 +64,24 @@ export default function TabTwoScreen() {
 
   // Función para guardar el entrenamiento en Firestore
   const guardarEntrenamiento = async () => {
-    if (!selectedExercise) {
-      alert('Selecciona un ejercicio');
-      return;
-    }
-
-    if (!notes.trim()) {
-      alert('Escribe una nota');
-      return;
-    }
-
     console.log('Botón presionado');
     console.log('Ejercicio:', selectedExercise);
     console.log('Notas:', notes);
     console.log('Fecha:', selectedDate);
 
-
     try {
       await addDoc(collection(db, 'entrenamientos'), {
-        exercise: selectedExercise.name,
+        exercise: selectedExercise?.name,
         notes: notes,
-        date: selectedDate.toISOString(),
+        date: selectedDate.toISOString().split('T')[0],
       });
 
       alert('Entrenamiento guardado');
       setNotes('');
 
+      console.log('Guardado en Firebase');
     } catch (error) {
       console.log(error);
-      alert('Error al guardar');
     }
   };
 
