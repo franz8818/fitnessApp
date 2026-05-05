@@ -46,7 +46,6 @@ export default function TabTwoScreen() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   //Carrusel de fechas
 
-
   //Generar un array de fechas para el carrusel
   const getDates = () => {
     const days = [];
@@ -67,16 +66,16 @@ export default function TabTwoScreen() {
     console.log('Botón presionado');
     console.log('Ejercicio:', selectedExercise);
     console.log('Notas:', notes);
-    console.log('Fecha:', selectedDate);
+    console.log('Fecha:', selectedDate.toISOString().split('T')[0]);
 
     try {
       await addDoc(collection(db, 'entrenamientos'), {
         exercise: selectedExercise?.name,
         notes: notes,
-        date: selectedDate.toISOString().split('T')[0],
+        date: selectedDate.toISOString().split('T')[0], // Guardamos solo la fecha en formato YYYY-MM-DD
       });
 
-      alert('Entrenamiento guardado');
+      alert('Guardado correctamente');
       setNotes('');
 
       console.log('Guardado en Firebase');
@@ -131,10 +130,10 @@ export default function TabTwoScreen() {
         {selectedExercise && ( // SCROLL DE FECHAS - Solo aparece si estas en detalles de un ejercicio.
           <View>
 
-            {/* TÍTULO */}
-            <ThemedText type="title" style={styles.sectionTitle}>
-              Fecha
+            <ThemedText type="title" style={styles.monthTitle}>
+              {selectedDate.toLocaleDateString('es-ES', { month: 'long' })}
             </ThemedText>
+
 
             {/* CARRUSEL */}
             <ScrollView
@@ -179,7 +178,13 @@ export default function TabTwoScreen() {
               onChangeText={setNotes}
             />
 
-            <Pressable onPress={guardarEntrenamiento} style={styles.saveButton}>
+            <Pressable
+              onPress={guardarEntrenamiento}
+              style={({ pressed }) => [
+                styles.saveButton,
+                pressed && { opacity: 0.7 }
+              ]}
+            >
               <ThemedText style={styles.saveButtonText}>
                 Guardar sesión
               </ThemedText>
@@ -349,14 +354,22 @@ const styles = StyleSheet.create({
   },
 
   dateItem: {
-    padding: 12,
+    padding: 14,
     borderRadius: 10,
     backgroundColor: '#eee',
-    marginRight: 8,
+    marginRight: 12,
+    marginTop: 10,
   },
 
   dateItemActive: {
-    backgroundColor: '#153152',
+    backgroundColor: '#153152', 
   },
+
+  monthTitle: {
+  fontSize: 28,
+  textTransform: 'capitalize',
+  marginTop: 10,
+  paddingHorizontal: 8,
+},
 
 });
