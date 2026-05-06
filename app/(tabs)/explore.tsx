@@ -13,14 +13,12 @@ import { collection, addDoc, getDocs } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 import { exercises } from '@/data/exercises'; // Datos de ejercicios locales (strings)
 
-
 type Exercise = {
   id: string; // Firestore usa id como string
   name: string;
   description: string;
   image: any; //ReactNative usa números internos para las imagenes locales, por eso se deja como any
 };
-
 
 type EjercicioDB = {
   id: string;
@@ -39,6 +37,12 @@ export default function TabTwoScreen() {
     Dominadas: require('@/assets/ejercicios/Dominadas.png'),
     Fondos: require('@/assets/ejercicios/Fondos.png'),
     Sentadillas: require('@/assets/ejercicios/Sentadillas.png'),
+    Caminadora: require('@/assets/ejercicios/Caminadora.png'),
+    Press_banca: require('@/assets/ejercicios/Press banca.png'),
+    Curl_biceps: require('@/assets/ejercicios/Curl bíceps.png'),
+    Elevaciones: require('@/assets/ejercicios/Elevaciónes laterale con mancuernas.png'),
+    Empuje: require('@/assets/ejercicios/Empuje de caderas.png'),
+    Curl_femoral: require('@/assets/ejercicios/Femoral tumbado en maquina.png'),
   };
 
 
