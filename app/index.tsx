@@ -18,6 +18,7 @@ export default function HomeScreen() {
       headerImage={
         <Image
           source={require('@/assets/images/FitnessApp-2.png')}
+          contentFit='contain'
           style={styles.headerImage}
         />
       }>
@@ -65,7 +66,6 @@ const styles = StyleSheet.create({
   headerImage: {
   width: 400,
   height: 300,
-  resizeMode: 'contain',
   position: 'absolute',
 },
   titleContainer: {

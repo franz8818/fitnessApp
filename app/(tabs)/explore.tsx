@@ -1,18 +1,25 @@
+//Componentes
 import { Image } from 'expo-image';
 import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
+//Hooks
 import { useState, useEffect } from 'react';
 
+//Componentes personalizados
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import CardItem from '@/components/ui/card-item';
-
 import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 
+//Firebase
 import { collection, addDoc, getDocs } from 'firebase/firestore';
 import { db } from '@/config/firebase';
+
+//Datos
 import { exercises } from '@/data/exercises'; // Datos de ejercicios locales (strings)
 
+
+//Tipos de datos
 type Exercise = {
   id: string; // Firestore usa id como string
   name: string;
@@ -27,13 +34,36 @@ type EjercicioDB = {
   imageKey: string;
 };
 
+type EntrenamientosDB = {
+  id: string;
+  exercise: string;
+  notes: string;
+  date: string; // Guardamos la fecha como string en formato YYYY-MM-DD
+};
 
+// Componente principal de la pantalla de exploración
 export default function TabTwoScreen() {
+
+  // Memoria del componente -> Qué ejercicio seleccionó el usuario -> React vuelve a renderizar.
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
   // console.log('Ejercicios:', exercises);
 
+  //CARRUSEL DE FECHAS
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  //Carrusel de fechas
 
-  //IMAGENES - Se obtienen de manera local con un mapeo de datos.
+  //NOTAS
+  const [notes, setNotes] = useState('');
+  // Guardar Notas
+
+  // Variable con datos, Función que actualiaza valor = Define el valor inicial del arreglo (any=cualquier tipo de dato)
+  const [entrenamientos, setEntrenamientos] = useState<EntrenamientosDB[]>([]);
+
+  // CONEXIÓN CON FIREBASE - Se obtiene la lista de ejercicios desde Firestore. - READ
+  const [ejerciciosDB, setEjerciciosDB] = useState<EjercicioDB[]>([]);
+
+
+  //IMAGENES(objeto) - Se obtienen de manera local con un mapeo de datos. DEBE EXISTIR EN LA CARPETA DE ASSETS.
   const images: { [key: string]: any } = {
     dominadas: require('@/assets/ejercicios/dominadas.png'),
     fondos: require('@/assets/ejercicios/fondos.png'),
@@ -47,10 +77,6 @@ export default function TabTwoScreen() {
   };
 
 
-  //CARRUSEL DE FECHAS
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  //Carrusel de fechas
-
   //Generar un array de fechas para el carrusel
   const getDates = () => {
     const days = [];
@@ -62,9 +88,6 @@ export default function TabTwoScreen() {
     return days;
   };
 
-  //NOTAS
-  const [notes, setNotes] = useState('');
-  // Guardar Notas
 
   // Función para guardar el entrenamiento en Firestore
   const guardarEntrenamiento = async () => {
@@ -73,6 +96,7 @@ export default function TabTwoScreen() {
     console.log('Notas:', notes);
     console.log('Fecha:', selectedDate.toISOString().split('T')[0]);
 
+    // Agregar el nuevo entrenamiento a la base de datos de Firestore - CREATE
     try {
       await addDoc(collection(db, 'entrenamientos'), {
         exercise: selectedExercise?.name,
@@ -89,27 +113,53 @@ export default function TabTwoScreen() {
     }
   };
 
-
-  // CONEXIÓN CON FIREBASE - Se obtiene la lista de ejercicios desde Firestore.
-  const [ejerciciosDB, setEjerciciosDB] = useState<EjercicioDB[]>([]);
   const obtenerEjercicios = async () => {
-    const querySnapshot = await getDocs(collection(db, 'ejercicios'));
+    try {
+      const querySnapshot = await getDocs(collection(db, 'ejercicios'));
 
-    const lista = querySnapshot.docs.map(doc => {
-      const data = doc.data() as Omit<EjercicioDB, 'id'>;
+      const lista = querySnapshot.docs.map(doc => {
+        const data = doc.data() as Omit<EjercicioDB, 'id'>;
 
-      return {
-        id: doc.id,
-        ...data
-      };
-    });
+        return {
+          id: doc.id,
+          ...data
+        };
+      });
 
-    setEjerciciosDB(lista);
+      setEjerciciosDB(lista);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
+
+  // Función para obtener los entrenamientos registrados por el usuario desde Firestore - READ
+  const obtenerEntrenamientos = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, 'entrenamientos'));
+
+      const lista = querySnapshot.docs.map(doc => {
+        const data = doc.data() as Omit<EntrenamientosDB, 'id'>;
+
+        return {
+          id: doc.id,
+          ...data
+        };
+      });
+
+      setEntrenamientos(lista);
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // useEffect para cargar los ejercicios y entrenamientos al montar el componente
   useEffect(() => {
     obtenerEjercicios();
-  }, []);
+    console.log();
+    obtenerEntrenamientos();
+  }, []); //Mostrar solo la primera vez que se monta el componente
 
 
   return (
@@ -198,6 +248,38 @@ export default function TabTwoScreen() {
           </View>
         )}
 
+        {selectedExercise && (
+          <View style={styles.formContainer}>
+
+            <ThemedText type="subtitle">
+              Historial
+            </ThemedText>
+
+            {entrenamientos
+              .filter(item => item.exercise === selectedExercise.name)
+              .map((item) => (
+                <View
+                  key={item.id}
+                  style={styles.entrenamientosView}
+                >
+                  <ThemedText>
+                    {item.exercise}
+                  </ThemedText>
+
+                  <ThemedText>
+                    {item.notes}
+                  </ThemedText>
+
+                  <ThemedText>
+                    {item.date}
+                  </ThemedText>
+
+                </View>
+              ))}
+
+          </View>
+        )}
+
         {selectedExercise && ( // DESCRIPCIÓN DEL EJERCICIO - Si hay un ejercicio seleccionado, muestra su descripción.
           <>
             <ThemedText type="title" style={styles.sectionTitle}>
@@ -212,7 +294,7 @@ export default function TabTwoScreen() {
           </>
         )}
 
-        {!selectedExercise && (
+        {!selectedExercise && ( // LISTADO DE EJERCICIOS - Si no hay ejercicio seleccionado, muestra el listado de ejercicios.
           <>
             <ThemedText type="title" style={styles.sectionTitle}>
               Explora los ejercicios
@@ -358,6 +440,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 
+  entrenamientosView: {
+    backgroundColor: '#f2f2f2',
+    padding: 12,
+    borderRadius: 10,
+    marginTop: 10,
+  },
+
   dateItem: {
     padding: 14,
     borderRadius: 10,
@@ -367,14 +456,14 @@ const styles = StyleSheet.create({
   },
 
   dateItemActive: {
-    backgroundColor: '#153152', 
+    backgroundColor: '#153152',
   },
 
   monthTitle: {
-  fontSize: 28,
-  textTransform: 'capitalize',
-  marginTop: 10,
-  paddingHorizontal: 8,
-},
+    fontSize: 28,
+    textTransform: 'capitalize',
+    marginTop: 10,
+    paddingHorizontal: 8,
+  },
 
 });

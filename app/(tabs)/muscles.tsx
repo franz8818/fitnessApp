@@ -19,6 +19,7 @@ type Muscle = {
 };
 
 export default function MusclesScreen() {
+  console.log(muscles);
   const [selectedMuscle, setSelectedMuscle] = useState<Muscle | null>(null);
 
   const [selectedDate, setSelectedDate] = useState(new Date());

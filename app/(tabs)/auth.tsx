@@ -174,13 +174,6 @@ export default function AuthScreen() {
 
 const styles = StyleSheet.create({
 
-  formContainer: {
-    flex: 1,              // Se usa para evitar superposición
-    padding: 30,
-    paddingTop: 50,
-    justifyContent: 'flex-start', //Empiezan los elementos al comienzo 
-  },
-
   header: {
     width: '100%',
     height: 250,
@@ -188,7 +181,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#f2f2f2', // Fondo gris claro para el encabezado
   },
-
+  
+  formContainer: {
+    flex: 1,              // Se usa para evitar superposición
+    padding: 30,
+    paddingTop: 50,
+    justifyContent: 'flex-start', //Empiezan los elementos al comienzo 
+  },
+  
   titleContainer: {
     flexDirection: 'row',
     marginBottom: 20,
