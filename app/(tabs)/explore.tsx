@@ -24,6 +24,7 @@ type EjercicioDB = {
   id: string;
   name: string;
   description: string;
+  imageKey: string;
 };
 
 
@@ -34,15 +35,15 @@ export default function TabTwoScreen() {
 
   //IMAGENES - Se obtienen de manera local con un mapeo de datos.
   const images: { [key: string]: any } = {
-    Dominadas: require('@/assets/ejercicios/Dominadas.png'),
-    Fondos: require('@/assets/ejercicios/Fondos.png'),
-    Sentadillas: require('@/assets/ejercicios/Sentadillas.png'),
-    Caminadora: require('@/assets/ejercicios/Caminadora.png'),
-    Press_banca: require('@/assets/ejercicios/Press banca.png'),
-    Curl_biceps: require('@/assets/ejercicios/Curl bíceps.png'),
-    Elevaciones: require('@/assets/ejercicios/Elevaciónes laterale con mancuernas.png'),
-    Empuje: require('@/assets/ejercicios/Empuje de caderas.png'),
-    Curl_femoral: require('@/assets/ejercicios/Femoral tumbado en maquina.png'),
+    dominadas: require('@/assets/ejercicios/dominadas.png'),
+    fondos: require('@/assets/ejercicios/fondos.png'),
+    sentadillas: require('@/assets/ejercicios/sentadillas.png'),
+    caminadora: require('@/assets/ejercicios/caminadora.png'),
+    press_banca: require('@/assets/ejercicios/press_banca.png'),
+    elevaciones: require('@/assets/ejercicios/elevaciones_laterale_con_mancuernas.png'),
+    empuje: require('@/assets/ejercicios/empuje_de_caderas.png'),
+    curl_femoral: require('@/assets/ejercicios/femoral_tumbado_en_maquina.png'),
+    curl_biceps: require('@/assets/ejercicios/curl_biceps.png'),
   };
 
 
@@ -226,13 +227,13 @@ export default function TabTwoScreen() {
                 <CardItem
                   key={item.id}
                   name={item.name}
-                  image={images[item.name] || require('@/assets/images/FitnessApp-2.png')} // fallback - Si no encuentra la imagen, muestra una por defecto.
+                  image={images[item.imageKey] || require('@/assets/images/FitnessApp-2.png')} // fallback - Si no encuentra la imagen, muestra una por defecto.
                   onPress={() =>
                     setSelectedExercise({
                       id: item.id, // o déjalo string si luego ajustas el tipo
                       name: item.name,
                       description: item.description,
-                      image: images[item.name] || require('@/assets/images/FitnessApp-2.png')
+                      image: images[item.imageKey] || require('@/assets/images/FitnessApp-2.png')
                     })
                   }
                 />
