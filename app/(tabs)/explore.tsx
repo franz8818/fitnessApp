@@ -12,7 +12,7 @@ import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 
 //Firebase
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 
 //Datos
@@ -101,11 +101,10 @@ export default function TabTwoScreen() {
       await addDoc(collection(db, 'entrenamientos'), {
         exercise: selectedExercise?.name,
         notes: notes,
-        date: selectedDate.toISOString().split('T')[0], // Guardamos solo la fecha en formato YYYY-MM-DD
+        date: selectedDate.toISOString().split('T')[0],
       });
 
-      alert('Guardado correctamente');
-      setNotes('');
+      obtenerEntrenamientos(); // Actualizar la lista de entrenamientos después de guardar
 
       console.log('Guardado en Firebase');
     } catch (error) {
@@ -154,6 +153,21 @@ export default function TabTwoScreen() {
     }
   };
 
+  // Función para eliminar un entrenamiento de Firestore - DELETE
+  const eliminarEntrenamiento = async (id: string) => {
+    try {
+
+      await deleteDoc(doc(db, 'entrenamientos', id));
+
+      console.log('Entrenamiento eliminado');
+
+      obtenerEntrenamientos();
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // useEffect para cargar los ejercicios y entrenamientos al montar el componente
   useEffect(() => {
     obtenerEjercicios();
@@ -191,10 +205,9 @@ export default function TabTwoScreen() {
 
 
             {/* CARRUSEL */}
-            <ScrollView
+            <ScrollView style={styles.carruselContainer}
               horizontal
               showsHorizontalScrollIndicator={false}
-              style={{ marginTop: 10 }}
             >
               {getDates().map((date, index) => {
                 const isSelected =
@@ -251,28 +264,46 @@ export default function TabTwoScreen() {
         {selectedExercise && (
           <View style={styles.formContainer}>
 
-            <ThemedText type="subtitle">
+            <ThemedText type="subtitle" style={styles.sectionTitle}>
               Historial
             </ThemedText>
 
             {entrenamientos
-              .filter(item => item.exercise === selectedExercise.name)
+              .filter(
+                item =>
+                  item.exercise === selectedExercise.name &&
+                  item.date === selectedDate.toISOString().split('T')[0]
+              )
               .map((item) => (
                 <View
                   key={item.id}
                   style={styles.entrenamientosView}
                 >
-                  <ThemedText>
-                    {item.exercise}
-                  </ThemedText>
 
-                  <ThemedText>
-                    {item.notes}
-                  </ThemedText>
+                  <View style={{ flex: 1 }}>
 
-                  <ThemedText>
-                    {item.date}
-                  </ThemedText>
+                    <ThemedText>
+                      {item.notes}
+                    </ThemedText>
+
+                    <ThemedText>
+                      {item.date.split('T')[0]}
+                    </ThemedText>
+
+                  </View>
+
+                  <Pressable style={styles.deleteButton}
+                    onPress={() => eliminarEntrenamiento(item.id)}
+                  >
+                    <ThemedText>
+                      <IconSymbol
+                        name="trash"
+                        size={18}
+                        color="#153152"
+                      />
+                    </ThemedText>
+
+                  </Pressable>
 
                 </View>
               ))}
@@ -409,8 +440,8 @@ const styles = StyleSheet.create({
 
   formContainer: {
     marginTop: 5,
-    paddingHorizontal: 12,
     gap: 10,
+
   },
 
   label: {
@@ -445,6 +476,18 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 10,
     marginTop: 10,
+
+    flexDirection: 'row', // Para colocar la fecha y el botón en la misma línea
+    justifyContent: 'space-between', // Para separar la fecha y el botón a los extremos
+    alignItems: 'center', // Para alinear verticalmente la fecha y el botón
+  },
+
+  deleteButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: 10,
+    alignSelf: 'flex-start',
   },
 
   dateItem: {
@@ -457,6 +500,11 @@ const styles = StyleSheet.create({
 
   dateItemActive: {
     backgroundColor: '#153152',
+  },
+
+  carruselContainer: {
+    marginTop: 10,
+    padding: 6,
   },
 
   monthTitle: {
