@@ -12,7 +12,7 @@ import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 
 //Firebase
-import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, deleteDoc, updateDoc, doc } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 
 //Datos
@@ -44,6 +44,9 @@ type EntrenamientosDB = {
 // Componente principal de la pantalla de exploración
 export default function TabTwoScreen() {
 
+  // CONEXIÓN CON FIREBASE - Se obtiene la lista de ejercicios desde Firestore. - READ
+  const [ejerciciosDB, setEjerciciosDB] = useState<EjercicioDB[]>([]);
+
   // Memoria del componente -> Qué ejercicio seleccionó el usuario -> React vuelve a renderizar.
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
   // console.log('Ejercicios:', exercises);
@@ -59,8 +62,9 @@ export default function TabTwoScreen() {
   // Variable con datos, Función que actualiaza valor = Define el valor inicial del arreglo (any=cualquier tipo de dato)
   const [entrenamientos, setEntrenamientos] = useState<EntrenamientosDB[]>([]);
 
-  // CONEXIÓN CON FIREBASE - Se obtiene la lista de ejercicios desde Firestore. - READ
-  const [ejerciciosDB, setEjerciciosDB] = useState<EjercicioDB[]>([]);
+  // Variable para controlar el modo de edición (si es null, no se está editando ningún entrenamiento)
+  const [editingId, setEditingId] = useState<string | null>(null);
+
 
 
   //IMAGENES(objeto) - Se obtienen de manera local con un mapeo de datos. DEBE EXISTIR EN LA CARPETA DE ASSETS.
@@ -98,6 +102,26 @@ export default function TabTwoScreen() {
 
     // Agregar el nuevo entrenamiento a la base de datos de Firestore - CREATE
     try {
+
+      if (editingId) {
+
+        const entrenamientoRef = doc(db, 'entrenamientos', editingId);
+
+        await updateDoc(entrenamientoRef, {
+          notes: notes,
+          date: selectedDate.toISOString().split('T')[0],
+        });
+
+        alert('Entrenamiento actualizado');
+
+        setEditingId(null);
+        setNotes('');
+
+        obtenerEntrenamientos();
+
+        return;
+      }
+
       await addDoc(collection(db, 'entrenamientos'), {
         exercise: selectedExercise?.name,
         notes: notes,
@@ -302,7 +326,22 @@ export default function TabTwoScreen() {
                         color="#153152"
                       />
                     </ThemedText>
+                  </Pressable>
 
+                  <Pressable
+                    style={styles.editButton}
+                    onPress={() => {
+                      setNotes(item.notes);
+                      setEditingId(item.id);
+                    }}
+                  >
+                    <ThemedText>
+                      <IconSymbol
+                        name="pencil"
+                        size={18}
+                        color="#153152"
+                      />
+                    </ThemedText>
                   </Pressable>
 
                 </View>
@@ -488,6 +527,14 @@ const styles = StyleSheet.create({
     gap: 6,
     marginTop: 10,
     alignSelf: 'flex-start',
+  },
+
+  editButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: 10,
+    marginLeft: 12,
   },
 
   dateItem: {
